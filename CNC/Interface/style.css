@@ -1,0 +1,128 @@
+/**
+GLOBAL DOCUMENT SETTINGS
+*/
+@import url('http://fonts.googleapis.com/css?family=Dosis:300,400,700');
+
+html {
+  font-family: 'Dosis', sans-serif;
+  font-weight:400;
+  box-sizing: border-box;
+}
+
+body {
+padding: 0;
+margin: 0;
+background: #fcfff4;
+background: -moz-linear-gradient(top,  #fcfff4 0%, #e9e9ce 100%);
+background: -webkit-linear-gradient(top,  #fcfff4 0%,#e9e9ce 100%);
+background: linear-gradient(to bottom,  #fcfff4 0%,#e9e9ce 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfff4', endColorstr='#e9e9ce',GradientType=0 );
+
+}
+
+/**
+TEXTUAL
+*/
+.subtitle {
+  font-weight: 300;
+}
+
+/**
+LOGO
+*/
+.img-logo {
+  margin:5px 0;
+  width:175px;
+  height:auto;
+}
+
+/**
+MAIN CONTENT
+*/
+
+.main-content {
+  position: absolute;
+  width: calc(100% - 250px);
+  right:0;
+  top:0;
+}
+
+/**
+TABLE SETTINGS
+*/
+.status-table {
+width: 100%;
+border: none;
+padding:5px;
+}
+
+.status-table th, .status-table td {
+  padding:5px;
+}
+
+.status-table tbody tr {
+  background-color: transparent;
+  transition: background-color 0.35s linear;
+}
+
+.status-table tbody tr:hover,
+.status-table tbody tr:focus {
+  background-color: #f4fdff;
+}
+
+.status-table thead {
+  text-align: left;
+}
+.table-heading {
+  font-weight:300;
+}
+
+.status-table tbody {
+  font-weight: 300;
+}
+
+/**
+MAIN MENU
+*/
+
+.main-menu {
+  background: #feffff;
+  background: -moz-linear-gradient(top,  #feffff 0%, #d2ebf9 100%);
+  background: -webkit-linear-gradient(top,  #feffff 0%,#d2ebf9 100%);
+  background: linear-gradient(to bottom,  #feffff 0%,#d2ebf9 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#feffff', endColorstr='#d2ebf9',GradientType=0 );
+
+  list-style: none;
+  padding:0;
+  margin:0;
+  width:250px;
+  height:100%;
+  position: fixed;
+  left:0;
+  top:0;
+}
+
+/**
+BUTTONS
+*/
+.btn {
+  border-radius: 5px;
+  padding: 5px;
+  width:150px;
+  border-color: transparent;
+  transition: background-color 0.5s linear;
+}
+.btn-start {
+  background-color: #aafcb8;
+}
+.btn-start:hover,
+.btn-start:focus {
+  background-color: #99e3a6;
+}
+.btn-stop {
+  background-color: #f25f5c;
+}
+.btn-stop:hover,
+.btn-stop:focus {
+  background-color: #db5653;
+}
