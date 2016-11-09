@@ -1,8 +1,26 @@
+/**
+* GLOBAL TABLE HEADER VARS
+*
+*/
+
+var stIdStatus = ["st-id", 0, true]; //Table is initially sorted by ID
+var stIpStatus = ["st-ip", 0, false];
+var stTaskStatus = ["st-task", 0, false];
+var stWorkloadStatus = ["st-workload", 0, false];
+var stActionStatus = ["st-action", 0, false];
+var stHeaders = [stIdStatus, stIpStatus, stTaskStatus, stWorkloadStatus, stActionStatus];
+
 fetchJSON = function() {
   fetch('http://botnet.artificial.engineering:80/api/Status').then((response) => {
     return response.json();
   }).then((json) => {
     currentJSON = json;
+      // currentJSON.sort(function(a, b){
+      //   return ipToValue(b.ip) - ipToValue(a.ip)
+      // });
+      // currentJSON.sort(function(a, b){
+      //   return ipToValue(a.ip) - ipToValue(b.ip)
+      // });
     populateTable(currentJSON);
     //json.sort(function(a, b){return a.id - b.id});
     // json.sort(function(a, b){
@@ -21,7 +39,7 @@ fetchJSON();
 //Keep the joy going
 setInterval(function() {
   fetchJSON();
-}, 1000);
+}, 2000000);
 
 var currentJSON;
 
@@ -62,6 +80,8 @@ populateTable = function(json) {
 
   var statusTable = document.getElementById('status-table');
   var tableBody = document.getElementById('status-table-body');
+  tableBody.innerHTML="";
+
   //clearTableRows(statusTable);
 
   //Insert the values from the current JSON file into the table
@@ -77,19 +97,38 @@ populateTable = function(json) {
     //Add the action button to the final cell
     var cell = row.insertCell(currentJSON.length);
     cell.innerHTML = '<button class="btn btn-start" onclick="toggleBtn(this)">Start</button>';
-    tableBody.remove();
   }
-
-  // console.log(json);
-  // var length = json.length;
-  // for(var i = 0; i < length; i++) {
-  //   console.log(json[i].id);
-  //   console.log(json[i].ip);
-  //   console.log(json[i].task);
-  //   console.log(json[i].workload);
-  // }
 }
 
+var sortBy = function(tHead){
+  //Set all headers to false
+  for(var i = 0; i < stHeaders.length; i++) {
+    if(tHead.id == stHeaders[i][0]) {
+      stHeaders[i][1]++; //Increase the click count
+      if(stHeaders[i][1] % 2 == 0) {
+        tHead.classList.add("ascent");
+        tHead.classList.remove("descent");
+      } else {
+        tHead.classList.add("descent");
+        tHead.classList.remove("ascent");
+      }
+
+      stHeaders[i][2] = true; //Set as active
+    } else {
+      stHeaders[i][2] = false; //Set others as inactive
+      document.getElementById(stHeaders[i][0]).classList.remove("ascent", "descent");
+      // document.getElementById(stHeaders[i][0]).classList.remove("ascent");
+      // document.getElementById(stHeaders[i][0]).classList.remove("descent");
+    }
+  }
+  console.log("Shitty protocol: ");
+  for(var i = 0; i < stHeaders.length; i++){
+    console.log("Status of element: " + stHeaders[i][0]);
+    console.log("Current Click Count is: " + stHeaders[i][1]);
+    console.log("Active? - " + stHeaders[i][2]);
+    console.log("------------------------------------------");
+  }
+}
 
 /**
 * Returns an IPv4 as well as IPv6 address as a numerical value.
@@ -164,18 +203,4 @@ var ipToValue = function(ip) {
       console.log("The numberical Value of the IPv4 is: " + parseInt(valueString, 2));
       return parseInt(valueString, 2);
     }
-}
-
-/**
-* Requires a table-object and clears all it's rows.
-*
-*/
-var clearTableRows = function(currentTable) {
-  var rowCount = currentTable.rows.length;
-  console.log("RowCount is: " + rowCount);
-  //Skipping the header row with 1
-  for(var i = 1; i < rowCount; i++) {
-    console.log("Deleting row position " + i + " of " + rowCount);
-    ///currentTable.deleteRow(i);
-  }
 }
