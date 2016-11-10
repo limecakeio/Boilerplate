@@ -3,58 +3,48 @@
 *
 */
 
+var statusJSON;
+var tasksJSON;
+
 var stIdStatus = ["st-id", 0, true]; //Table is initially sorted by ID
 var stIpStatus = ["st-ip", 0, false];
 var stTaskStatus = ["st-task", 0, false];
 var stWorkloadStatus = ["st-workload", 0, false];
-var stActionStatus = ["st-action", 0, false];
-var stHeaders = [stIdStatus, stIpStatus, stTaskStatus, stWorkloadStatus, stActionStatus];
 
-fetchJSON = function() {
-  fetch('http://botnet.artificial.engineering:80/api/Status').then((response) => {
+var stHeaders = [stIdStatus, stIpStatus, stTaskStatus, stWorkloadStatus];
+
+/**
+* Fetch the current JSON object from the botnet server. Requires the final
+* directory of the URL passed on as a string.
+*/
+fetchJSON = function(target) {
+  fetch('http://botnet.artificial.engineering:80/api/' + target).then((response) => {
     return response.json();
   }).then((json) => {
-    currentJSON = json;
-      // currentJSON.sort(function(a, b){
-      //   return ipToValue(b.ip) - ipToValue(a.ip)
-      // });
-      // currentJSON.sort(function(a, b){
-      //   return ipToValue(a.ip) - ipToValue(b.ip)
-      // });
-    populateTable(currentJSON);
-    //json.sort(function(a, b){return a.id - b.id});
-    // json.sort(function(a, b){
-    //   return ipToValue(b.ip) - ipToValue(a.ip)
-    // });
-    // populateTable(json);
-    // for(var i = 0; i < currentJSON.length; i++) {
-    //   ipToValue(currentJSON[i].ip);
-    // }
-});
+    var i = 0;
+
+    if(target == "Status"){
+      statusJSON = json;
+      //Get the active sorting header
+      while(stHeaders[i][2] == false) {
+        i++;
+      }
+    } else {
+      tasksJSON = json;
+      console.log(tasksJSON);
+    }
+    jsonSort(i);
+  });
 };
 
-//Kicking off the joy
-fetchJSON();
-
-//Keep the joy going
+//Continuously refresh status data
 setInterval(function() {
-  fetchJSON();
-}, 2000000);
+  fetchJSON("Status");
+}, 1000);
 
-var currentJSON;
+//Get the tasks data once to begin with
+fetchJSON("Tasks");
 
-doFetch = function() {
-  var img = document.querySelector('#status img');
-
-  fetch('success.gif').then(function(response) {
-      return response.blob();
-  }).then(function(response) {
-
-      var url = URL.createObjectURL(response);
-      img.src = url;
-
-  });
-}
 
 /**
 *Toggles the active/non-active button
@@ -71,62 +61,25 @@ toggleBtn = function(obj) {
 }
 
 /*
-* Parses the current JSON Object and fills the status table rows with the
-* content.
-* Requires a JSON object.
 **/
-
 populateTable = function(json) {
 
-  var statusTable = document.getElementById('status-table');
   var tableBody = document.getElementById('status-table-body');
   tableBody.innerHTML="";
 
-  //clearTableRows(statusTable);
-
   //Insert the values from the current JSON file into the table
-  for(var i = 0; i < currentJSON.length; i++) {
+  for(var i = 0; i < json.length; i++) {
     var row = tableBody.insertRow(i);
-    for(var j = 0; j < Object.keys(currentJSON[0]).length; j++) {
+    for(var j = 0; j < Object.keys(json[0]).length; j++) {
       var cell = row.insertCell(j);
-      var currentKey = Object.keys(currentJSON[i])[j];
-      var currentValue = currentJSON[i][currentKey];
+      var currentKey = Object.keys(json[i])[j];
+      var currentValue = json[i][currentKey];
       cell.innerHTML = currentValue;
     }
 
     //Add the action button to the final cell
-    var cell = row.insertCell(currentJSON.length);
+    var cell = row.insertCell(json.length);
     cell.innerHTML = '<button class="btn btn-start" onclick="toggleBtn(this)">Start</button>';
-  }
-}
-
-var sortBy = function(tHead){
-  //Set all headers to false
-  for(var i = 0; i < stHeaders.length; i++) {
-    if(tHead.id == stHeaders[i][0]) {
-      stHeaders[i][1]++; //Increase the click count
-      if(stHeaders[i][1] % 2 == 0) {
-        tHead.classList.add("ascent");
-        tHead.classList.remove("descent");
-      } else {
-        tHead.classList.add("descent");
-        tHead.classList.remove("ascent");
-      }
-
-      stHeaders[i][2] = true; //Set as active
-    } else {
-      stHeaders[i][2] = false; //Set others as inactive
-      document.getElementById(stHeaders[i][0]).classList.remove("ascent", "descent");
-      // document.getElementById(stHeaders[i][0]).classList.remove("ascent");
-      // document.getElementById(stHeaders[i][0]).classList.remove("descent");
-    }
-  }
-  console.log("Shitty protocol: ");
-  for(var i = 0; i < stHeaders.length; i++){
-    console.log("Status of element: " + stHeaders[i][0]);
-    console.log("Current Click Count is: " + stHeaders[i][1]);
-    console.log("Active? - " + stHeaders[i][2]);
-    console.log("------------------------------------------");
   }
 }
 
@@ -171,7 +124,6 @@ var ipToValue = function(ip) {
     }
 
     //Convert the final value String into an integer
-    console.log("The numberical Value of the IPv6 is: " + parseInt(valueString, 2));
     return parseInt(valueString, 2);
   }
   else { //We have an IPv4 Address
@@ -200,7 +152,53 @@ var ipToValue = function(ip) {
       }
 
       //Convert the final value String into an integer
-      console.log("The numberical Value of the IPv4 is: " + parseInt(valueString, 2));
       return parseInt(valueString, 2);
     }
+}
+
+var jsonSort = function(index){
+  if(stHeaders[index][0] == "st-ip"){
+    if(stIpStatus[1]%2 == 0) {
+      statusJSON.sort(function(a, b){
+        return ipToValue(a.ip) - ipToValue(b.ip);
+      });
+    } else {
+      statusJSON.sort(function(a, b){
+        return ipToValue(b.ip) - ipToValue(a.ip);
+      });
+    }
+  } else{
+    if(stHeaders[index][1] % 2 == 0) {
+      statusJSON.sort(function(a, b){
+        return a[Object.keys(a)[index]] - b[Object.keys(b)[index]];
+      });
+    } else {
+      statusJSON.sort(function(a, b){
+        return b[Object.keys(b)[index]] - a[Object.keys(a)[index]];
+      });
+    }
+  }
+  populateTable(statusJSON);
+}
+
+var sortBy = function(tHead){
+  //Set all headers to false
+  for(var i = 0; i < stHeaders.length; i++) {
+    if(tHead.id == stHeaders[i][0]) {
+      console.log("Sorting column " +i);
+      stHeaders[i][1]++; //Increase the click count
+      if(stHeaders[i][1] % 2 == 0) {
+        tHead.classList.add("ascent");
+        tHead.classList.remove("descent");
+      } else {
+        tHead.classList.add("descent");
+        tHead.classList.remove("ascent");
+      }
+      stHeaders[i][2] = true; //Set as active
+      jsonSort(i);
+    } else {
+      stHeaders[i][2] = false; //Set others as inactive
+      document.getElementById(stHeaders[i][0]).classList.remove("ascent", "descent");
+    }
+  }
 }

@@ -13,20 +13,20 @@
   </div>
   <p class="subtitle">CNC Interface by <strong>ForkGitIT</strong></p>
 <h2>Main Menu</h2>
-<li>Page 01</li>
-<li>Page 02</li>
-<li>Page 03</li>
+<li><a href="">Home</a></li>
+<li><a href="#status" id="st-link" onclick="loadPage(this)">Status Table</a></li>
+<li><a href="#tasks" id="task-link" onclick="loadPage(this)">Task Table</a></li>
 <li>Page 04</li>
 <li>Page 05</li>
 </menu>
 <main class="main-content">
 
-<section class="status-table-container" id="status-table-container">
+<section class="status-table-container" id="status-table">
   <h1 class="table-heading">Status Tabelle [Bots]</h1>
   <table id="status-table" class="status-table">
     <thead id="status-table-header">
       <tr>
-        <th id="st-id" class="st-header active ascent" onclick="sortBy(this)">ID</th>
+        <th id="st-id" class="st-header ascent" onclick="sortBy(this)">ID</th>
         <th id="st-ip" class="st-header" onclick="sortBy(this)">IP</th>
         <th id="st-task" class="st-header" onclick="sortBy(this)">Task</th>
         <th id="st-workload" class="st-header" onclick="sortBy(this)">Workload</th>
@@ -34,6 +34,22 @@
       </tr>
     </thead>
     <tbody id="status-table-body">
+    </tbody>
+  </table>
+</section>
+
+<section class="tasks-table-container" id="tasks-table">
+  <h1 class="table-heading">Tasks Tabelle [Bots]</h1>
+  <table id="tasks-table" class="tasks-table">
+    <thead id="status-table-header">
+      <tr>
+        <th id="tt-id" class="st-header ascent" onclick="sortBy(this)">ID</th>
+        <th id="tt-type" class="st-header" onclick="sortBy(this)">Type</th>
+        <th id="tt-input" class="st-header" onclick="sortBy(this)">Input</th>
+        <th id="tt-output" class="st-header" onclick="sortBy(this)">Workload</th>
+      </tr>
+    </thead>
+    <tbody id="tasks-table-body">
     </tbody>
   </table>
 </section>

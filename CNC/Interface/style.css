@@ -64,42 +64,47 @@ MAIN CONTENT
 /**
 TABLE SETTINGS
 */
-.status-table {
+table {
 width: 100%;
 border: none;
 padding:5px;
 }
 
 .st-header {
+  font-family: 'icons', 'Dosis', sans-serif;
   cursor: pointer;
 }
 
-.st-header.descent {
-
+.st-header.descent:after {
+  content: "\e5c5";
 }
 
-.status-table th, .status-table td {
+.st-header.ascent:after {
+  content: "\e5c7";
+}
+
+table th, table td {
   padding:5px;
 }
 
-.status-table tbody tr {
+table tbody tr {
   background-color: transparent;
   transition: background-color 0.35s linear;
 }
 
-.status-table tbody tr:hover,
-.status-table tbody tr:focus {
+table tbody tr:hover,
+table tbody tr:focus {
   background-color: #f4fdff;
 }
 
-.status-table thead {
+table thead {
   text-align: left;
 }
 .table-heading {
   font-weight:300;
 }
 
-.status-table tbody {
+table tbody {
   font-weight: 300;
 }
 
@@ -147,4 +152,12 @@ BUTTONS
 .btn-stop:hover,
 .btn-stop:focus {
   background-color: #db5653;
+}
+
+/**
+* MAIN SECTIONS
+*/
+section {
+  display:block;
+  height:100%;
 }
