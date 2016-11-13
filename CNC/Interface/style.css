@@ -31,6 +31,7 @@ background: -moz-linear-gradient(top,  #fcfff4 0%, #e9e9ce 100%);
 background: -webkit-linear-gradient(top,  #fcfff4 0%,#e9e9ce 100%);
 background: linear-gradient(to bottom,  #fcfff4 0%,#e9e9ce 100%);
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfff4', endColorstr='#e9e9ce',GradientType=0 );
+overflow-x: hidden;
 
 }
 
@@ -68,6 +69,20 @@ table {
 width: 100%;
 border: none;
 padding:5px;
+}
+section.active {
+	background-color: green;
+	position: absolute;
+	left: 0;
+	width: 100%;
+	transition: background-color 5s linear, left 0.5s linear;
+}
+section.hide {
+	background-color: orange;
+	position: absolute;
+	left: calc(100%);
+	width: 100%;
+	transition: background-color 5s linear, left 0.5s linear;
 }
 
 .st-header {

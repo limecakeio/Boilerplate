@@ -202,3 +202,24 @@ var sortBy = function(tHead){
     }
   }
 }
+
+var loadPage = function(id){
+	if(id == "status-table") {
+		document.getElementById("status-table").classList.add("active");
+		document.getElementById("status-table").classList.remove("hide");
+		
+		document.getElementById("tasks-table").classList.remove("active");
+		document.getElementById("tasks-table").classList.add("hide");
+	} else {
+		document.getElementById("tasks-table").classList.add("active");
+		document.getElementById("tasks-table").classList.remove("hide");
+		
+		document.getElementById("status-table").classList.remove("active");
+		document.getElementById("status-table").classList.add("hide");
+	}
+}
+
+var reset = function(){
+		document.getElementById("status-table").classList.remove("active", "hide");
+		document.getElementById("tasks-table").classList.remove("active", "hide");
+}
