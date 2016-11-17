@@ -31,20 +31,10 @@ fetchJSON = function(target) {
       }
     } else {
       tasksJSON = json;
-      console.log(tasksJSON);
     }
     jsonSort(i);
   });
 };
-
-//Continuously refresh status data
-setInterval(function() {
-  fetchJSON("Status");
-}, 1000);
-
-//Get the tasks data once to begin with
-fetchJSON("Tasks");
-
 
 /**
 *Toggles the active/non-active button
@@ -156,31 +146,6 @@ var ipToValue = function(ip) {
     }
 }
 
-var jsonSort = function(index){
-  if(stHeaders[index][0] == "st-ip"){
-    if(stIpStatus[1]%2 == 0) {
-      statusJSON.sort(function(a, b){
-        return ipToValue(a.ip) - ipToValue(b.ip);
-      });
-    } else {
-      statusJSON.sort(function(a, b){
-        return ipToValue(b.ip) - ipToValue(a.ip);
-      });
-    }
-  } else{
-    if(stHeaders[index][1] % 2 == 0) {
-      statusJSON.sort(function(a, b){
-        return a[Object.keys(a)[index]] - b[Object.keys(b)[index]];
-      });
-    } else {
-      statusJSON.sort(function(a, b){
-        return b[Object.keys(b)[index]] - a[Object.keys(a)[index]];
-      });
-    }
-  }
-  populateTable(statusJSON);
-}
-
 var sortBy = function(tHead){
   //Set all headers to false
   for(var i = 0; i < stHeaders.length; i++) {
@@ -201,25 +166,4 @@ var sortBy = function(tHead){
       document.getElementById(stHeaders[i][0]).classList.remove("ascent", "descent");
     }
   }
-}
-
-var loadPage = function(id){
-	if(id == "status-table") {
-		document.getElementById("status-table").classList.add("active");
-		document.getElementById("status-table").classList.remove("hide");
-		
-		document.getElementById("tasks-table").classList.remove("active");
-		document.getElementById("tasks-table").classList.add("hide");
-	} else {
-		document.getElementById("tasks-table").classList.add("active");
-		document.getElementById("tasks-table").classList.remove("hide");
-		
-		document.getElementById("status-table").classList.remove("active");
-		document.getElementById("status-table").classList.add("hide");
-	}
-}
-
-var reset = function(){
-		document.getElementById("status-table").classList.remove("active", "hide");
-		document.getElementById("tasks-table").classList.remove("active", "hide");
 }

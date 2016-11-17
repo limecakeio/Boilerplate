@@ -4,6 +4,7 @@ GLOBAL DOCUMENT SETTINGS
 
 /*ADD ICONS*/
 
+@import url('http://fonts.googleapis.com/css?family=Dosis:300,400,700');
 @font-face {
   font-family: 'icons';
   src:  url('icons/icomoon.eot?ozinhx');
@@ -15,10 +16,9 @@ GLOBAL DOCUMENT SETTINGS
   font-style: normal;
 }
 
-@import url('http://fonts.googleapis.com/css?family=Dosis:300,400,700');
-
 html {
-  font-family: 'Dosis', sans-serif;
+  color: #2d3142;
+  font-family: 'icons', 'Dosis', sans-serif;
   font-weight:400;
   box-sizing: border-box;
 }
@@ -71,36 +71,16 @@ width: 100%;
 border: none;
 padding:5px;
 }
-section {
-   background-color: yellow;
-} 
-section.active {
-	background-color: green;
-	position: absolute;
-	left: 0;
-        height: 100%;
-	width: 100%;
-	transition: background-color 3s linear, left 3s linear;
-}
-section.hide {
-	background-color: orange;
-	position: absolute;
-	left: calc(100%);
-        height: 100%;
-	width: 100%;
-	transition: background-color 3s linear, left 3s linear;
-}
 
-.st-header {
-  font-family: 'icons', 'Dosis', sans-serif;
+th {
   cursor: pointer;
 }
 
-.st-header.descent:after {
+th.descent:after {
   content: "\e5c5";
 }
 
-.st-header.ascent:after {
+th.ascent:after {
   content: "\e5c7";
 }
 
@@ -122,7 +102,7 @@ table thead {
   text-align: left;
 }
 .table-heading {
-  font-weight:300;
+  font-weight:700;
 }
 
 table tbody {
@@ -133,13 +113,16 @@ table tbody {
 MAIN MENU
 */
 
+.logo-container {
+  margin-bottom: 10pt;
+}
+
 .main-menu {
   background: #feffff;
   background: -moz-linear-gradient(top,  #feffff 0%, #d2ebf9 100%);
   background: -webkit-linear-gradient(top,  #feffff 0%,#d2ebf9 100%);
   background: linear-gradient(to bottom,  #feffff 0%,#d2ebf9 100%);
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#feffff', endColorstr='#d2ebf9',GradientType=0 );
-
   list-style: none;
   padding:0;
   margin:0;
@@ -148,6 +131,37 @@ MAIN MENU
   position: fixed;
   left:0;
   top:0;
+}
+
+.menu-link {
+  display:block;
+  text-decoration: none;
+  padding: 5pt;
+  color: #2d3142;
+  background-color: transparent;
+  border-bottom:1px solid #ccc;
+  transition: all 0.35s linear;
+}
+
+.menu-link.active,
+.menu-link:hover,
+.menu-link:active,
+.menu-link:focus {
+  color: #D9EEFA;
+  background-color: #2d3142;
+}
+
+.menu-link:before {
+  margin-right: 6pt;
+}
+.menu-link.home:before{
+  content: "\e88a";
+}
+.menu-link.status:before{
+  content: "\e88f";
+}
+.menu-link.task:before{
+  content: "\e896";
 }
 
 /**
@@ -180,5 +194,36 @@ BUTTONS
 */
 section {
   display:block;
+  position: absolute;
+  background-color: orange;
   height:100%;
+  width: 100%;
+  background-color: #0b132b;
+  left: 100%;
+  transition: all 0.55s linear;
+}
+
+section.active {
+  background-color: transparent;
+	left: 0;
+}
+
+/**WELCOME SCREEN*/
+
+.bot-icon:before {
+  display:block;
+  content: "\e859";
+  font-size:100pt;
+  color: #8fb339;
+}
+
+.welcome-msg-container {
+  display:flex;
+  align-items: center;
+  height:100%;
+}
+
+.welcome-msg {
+  text-align: center;
+  width:100%;
 }
