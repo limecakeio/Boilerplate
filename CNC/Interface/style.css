@@ -2,7 +2,7 @@
 GLOBAL DOCUMENT SETTINGS
 */
 
-/*ADD ICONS*/
+/*ADD ICONS & CUSTOM FONTS*/
 
 @import url('http://fonts.googleapis.com/css?family=Dosis:300,400,700');
 @font-face {
@@ -31,8 +31,6 @@ background: -moz-linear-gradient(top,  #fcfff4 0%, #e9e9ce 100%);
 background: -webkit-linear-gradient(top,  #fcfff4 0%,#e9e9ce 100%);
 background: linear-gradient(to bottom,  #fcfff4 0%,#e9e9ce 100%);
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfff4', endColorstr='#e9e9ce',GradientType=0 );
-overflow-x: hidden;
-
 }
 
 /**
@@ -61,6 +59,7 @@ MAIN CONTENT
   width: calc(100% - 250px);
   right:0;
   top:0;
+  overflow: hidden;
 }
 
 /**
@@ -72,7 +71,7 @@ border: none;
 padding:5px;
 }
 
-th {
+th[data-ref] {
   cursor: pointer;
 }
 
@@ -95,7 +94,7 @@ table tbody tr {
 
 table tbody tr:hover,
 table tbody tr:focus {
-  background-color: #f4fdff;
+  background-color: #96ecff;
 }
 
 table thead {
@@ -206,6 +205,7 @@ section {
 section.active {
   background-color: transparent;
 	left: 0;
+  overflow-y: auto;
 }
 
 /**WELCOME SCREEN*/

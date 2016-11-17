@@ -9,9 +9,17 @@ var clickCount = 0;
 var statusTableContainer = "status-table";
 var taskTableContainer = "tasks-table";
 
+//Define the headings for each section
+var statusTableHeading = "Status Table [Bots]";
+var tasksTableHeading = "Task Table [Bots]";
+
+//Define the sort state for relevant tables: type of data, key,
+var statusTableSort = [statusTableContainer, "id", "number"];
+var tasksTableSort = [taskTableContainer, "id", "number"];
+
 //Define the location of data sources - the url
 var statusServer = "http://botnet.artificial.engineering:80/api/Status";
-var taskServer = "http://botnet.artificial.engineering:80/api/Tasks";
+var tasksServer = "http://botnet.artificial.engineering:80/api/Tasks";
 
 //Define local copies
 var statusData;
@@ -19,25 +27,26 @@ var taskData;
 
 //Compose the tables
 composeTable = function(dataSource, containerID){
-  //Set the sources
-  if(containerID == "status-table") {
 
-  } else if(containerID == "tasks-table"){
-
-  };
-  //Grab the data
   fetch(dataSource).then((response) => {
     return response.json();
   }).then((json) => {
-    //Sort the local copy [TODO!]
 
-    //Save local copy of the data
+    //Ensure the relevant section is cleared, then sort and save local copy of the data
+    var heading;
+    var section = document.querySelector("#" + containerID);
+    section.innerHTML="";
     if(containerID == "status-table") {
-      statusData = json;
+      statusData = sortData(json, statusTableSort);
+      heading = statusTableHeading;
     } else if(containerID == "tasks-table") {
-      tasksData = json;
+      tasksData = sortData(json, tasksTableSort);
+      heading = tasksTableHeading;
     };
 
+    //Set the heading
+    var headline = document.createElement("h1");
+    headline.innerHTML= heading;
 
     //Create the table
     var newTable = document.createElement('TABLE');
@@ -58,7 +67,7 @@ composeTable = function(dataSource, containerID){
       };
       headerCell.setAttribute("data-field", headings[i]);
       headerCell.setAttribute("data-ref", containerID);
-      headerCell.setAttribute("onclick", "sortColumn(this)");
+      headerCell.setAttribute("onclick", "sortBy(this)");
 
 
       //Dirty fix for handling tasks containing a further level of data.
@@ -70,10 +79,10 @@ composeTable = function(dataSource, containerID){
         tableHeaderRow.appendChild(inputCell);
         tableHeaderRow.appendChild(outputCell);
       } else {
-      headerCell.id= containerID + "-" + headings[i];
-      headerCell.innerHTML=headings[i];
-      tableHeaderRow.appendChild(headerCell);
-    };
+        headerCell.id= containerID + "-" + headings[i];
+        headerCell.innerHTML=headings[i];
+        tableHeaderRow.appendChild(headerCell);
+      };
     };
 
     //Populate the table body
@@ -108,16 +117,34 @@ composeTable = function(dataSource, containerID){
 
     //Add the table to the section
     var tableSection = document.querySelector("#" + containerID);
+    tableSection.appendChild(headline);
     tableSection.appendChild(newTable);
+
+    //Set the correct sorting order
+    var isEven = (clickCount % 2 == 0);
+    var order;
+    if(isEven) {
+      order = "ascent";
+    } else {
+      order = "descent";
+    }
+    var allTableHeaders = document.querySelectorAll("th");
+    for(var i = 0; i < allTableHeaders.length; i++) {
+      if(allTableHeaders[i].getAttribute("data-ref") == "tasks-table") {
+        if(allTableHeaders[i].getAttribute("data-field") == tasksTableSort[1]) {
+          allTableHeaders[i].classList.add(order);
+        };
+      } else if(allTableHeaders[i].getAttribute("data-ref") == "status-table") {
+        if (allTableHeaders[i].getAttribute("data-field") == statusTableSort[1]){
+         allTableHeaders[i].classList.add(order);
+       };
+      };
+    };
 
     //Special treatment for specific tables
     if(containerID == "status-table"){
       addActionButtons(containerID);
     };
-    if(containerID == "task-table"){
-      addDeleteButtons(containerID);
-    }
-
   });
 };
 
@@ -147,25 +174,6 @@ var addActionButtons = function(sectionID) {
 };
 
 /**
-* Adds a column to a table with delete buttons.
-* Required the sectionID of the section the table is hosted in. [TODO]
-*/
-var addDeleteButtons = function(sectionID) {
-  var tableHeaderRow = document.querySelector("#" + sectionID + " table thead tr");
-  addHeaderColumn(tableHeaderRow, "");
-
-  //Populate the last column with delete buttons
-  var tableBodyRows = document.querySelectorAll("#" + sectionID + " table tbody tr");
-  for(var i = 0; i < tableBodyRows.length; i++) {
-    var currentRow = tableBodyRows[i];
-    var newCell = document.createElement("TD");
-    newCell.innerHTML="<button class='btn btn-stop' onclick='deleteTask()'>Delete</button>";
-    currentRow.appendChild(newCell);
-  };
-
-};
-
-/**
 * Adds a header-column to the end of a table.
 * Requires the header row the column is to be added to.
 * Required the title of the new column as a string.
@@ -175,33 +183,8 @@ var addHeaderColumn = function(headerRow, columnTitle){
   newColumn.innerHTML=columnTitle;
   headerRow.appendChild(newColumn);
 };
-
-/**Sorts the data*/
-var jsonSort = function(data, criteria){
-  if(stHeaders[index][0] == "st-ip"){
-    if(stIpStatus[1]%2 == 0) {
-      statusJSON.sort(function(a, b){
-        return ipToValue(a.ip) - ipToValue(b.ip);
-      });
-    } else {
-      statusJSON.sort(function(a, b){
-        return ipToValue(b.ip) - ipToValue(a.ip);
-      });
-    }
-  } else{
-    if(stHeaders[index][1] % 2 == 0) {
-      statusJSON.sort(function(a, b){
-        return a[Object.keys(a)[index]] - b[Object.keys(b)[index]];
-      });
-    } else {
-      statusJSON.sort(function(a, b){
-        return b[Object.keys(b)[index]] - a[Object.keys(a)[index]];
-      });
-    };
-  };
-};
 //Inititate the status table
 composeTable(statusServer, statusTableContainer);
 
 //Inititate the task table
-composeTable(taskServer, taskTableContainer);
+composeTable(tasksServer, taskTableContainer);
