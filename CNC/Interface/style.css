@@ -203,11 +203,16 @@ section {
 }
 
 section.active {
+  height: 90%;
   background-color: transparent;
 	left: 0;
   overflow-y: auto;
 }
 
+/**SELECT*/
+select {
+  margin-top: 90%;
+}
 /**WELCOME SCREEN*/
 
 .bot-icon:before {

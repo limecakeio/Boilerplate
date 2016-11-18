@@ -19,4 +19,7 @@ var loadPage = function(id, menuLink){
       currentMenuItem.classList.remove("active");
     };
   };
+  setInputField();
 };
+
+
