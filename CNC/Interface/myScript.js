@@ -23,7 +23,7 @@ function setInputField() {
 
     /* When the user clicks on the button, 
     toggle between hiding and showing the dropdown content */
-    var x = document.createElement("SELECT");
+    var select = document.createElement("SELECT");
 
     var option = document.createElement("option");
     var option1 = document.createElement("option");
@@ -35,22 +35,54 @@ function setInputField() {
     option2.text = "hash-sha256";
     option3.text = "crack-md5";
 
-    x.add(option);
-    x.add(option1);
-    x.add(option2);
-    x.add(option3);
+    select.add(option);
+    select.add(option1);
+    select.add(option2);
+    select.add(option3);
 
     var main = document.querySelector("main");
-    main.appendChild(x);
+    main.appendChild(select);
 
-    x.onchange = function(){changeOpt(x)};
+    select.onchange = function(){changeOpt(select)};
     var opt = "";
 
     function changeOpt(x){
       opt = getSelectedOption(x);      
     }
 
-    function getSelectedOption(x) {
+    
+    var getText = "";
+    var text = document.createElement("INPUT");
+    text.setAttribute("type", "text");
+    main.appendChild(text);
+
+    text.onchange = function() {change()};
+    function change() { 
+      getText = text.value 
+      return getText;
+    };
+
+    var button = document.createElement("BUTTON");
+    button.innerHTML="send";
+    button.onclick = function(){sendForm(select)};
+    main.appendChild(button);
+
+  } else {
+    if (section[1].id != "tasks-table") {
+    var main = document.querySelector("main");
+    console.log(main.childNodes);
+    console.log(main.childNodes.length);
+    main.removeChild(main.childNodes[9]);
+    main.removeChild(main.childNodes[8]);
+    main.removeChild(main.childNodes[7]);
+    //for(var i = main.childNodes.length - 1; i >= main.childNodes.length - 3; i--){
+    //main.removeChild(main.childNodes[i]);
+    //};
+  }
+}
+};
+
+function getSelectedOption(x) {
       var opt;
       for ( var i = 0, len = x.options.length; i < len; i++ ) {
           opt = x.options[i];
@@ -61,20 +93,6 @@ function setInputField() {
       return opt.text;
     }
 
-    var getText = "";
-    var text = document.createElement("INPUT");
-    text.setAttribute("type", "text");
-    main.appendChild(text);
-
-    var button = document.createElement("BUTTON");
-    button.innerHTML="send";
-    main.appendChild(button);
-    button.onclick = function(){sendForm(x)};
-    text.onchange = function() {change()};
-    function change() { 
-      getText = text.value 
-      return getText;
-    };
 
     function sendForm(x){
        var data = {
@@ -99,17 +117,3 @@ function setInputField() {
 	});
 
     }
-  } else {
-    if (section[1].id != "tasks-table") {
-    var main = document.querySelector("main");
-    console.log(main.childNodes);
-    console.log(main.childNodes.length);
-    main.removeChild(main.childNodes[9]);
-    main.removeChild(main.childNodes[8]);
-    main.removeChild(main.childNodes[7]);
-    //for(var i = main.childNodes.length - 1; i >= main.childNodes.length - 3; i--){
-    //main.removeChild(main.childNodes[i]);
-    //};
-  }
-}
-};

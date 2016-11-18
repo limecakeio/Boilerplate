@@ -169,6 +169,13 @@ var addActionButtons = function(sectionID) {
     } else {
       newCell.innerHTML = "<button class='btn btn-stop' onclick='toggleBtn(this)'>Stop</button>";
     };
+    //var id = document.createAttribute("data-id");
+    //id.value = currentCells[0].innerHTML;
+    //newCell.setAttributeNode(id);
+console.log(currentCells[0].innerHTML);
+console.log(typeof currentCells[0].innerHTML);
+var inner = newCell.innerHTML;
+    newCell.setAttribute("data-id", currentCells[0].innerHTML);
     currentRow.appendChild(newCell);
   };
 };
