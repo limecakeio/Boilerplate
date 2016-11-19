@@ -162,20 +162,16 @@ var addActionButtons = function(sectionID) {
   for(var i = 0; i < tableBodyRows.length; i++){
     var currentRow = tableBodyRows[i];
     var currentCells = currentRow.cells;
-    //We know we want to know what's in the 4th cell
+	var btn = document.createElement('BUTTON');
+	var id = currentCells[0].innerHTML;
+	
+    //We know we want to know what's in the 4 cell
     var newCell = document.createElement('TD');
     if(currentCells[3].innerHTML == "0"){
-      newCell.innerHTML = "<button class='btn btn-start' onclick='toggleBtn(this)'>Start</button>";
+      newCell.innerHTML = "<button class='btn btn-start' data-id='" + '"' + + id + '"' + "' onclick='toggleBtn(this)'>Start</button>";
     } else {
-      newCell.innerHTML = "<button class='btn btn-stop' onclick='toggleBtn(this)'>Stop</button>";
+      newCell.innerHTML = "<button class='btn btn-stop' data-id='" + '"' + + id + '"' + "' onclick='toggleBtn(this)'>Stop</button>";
     };
-    //var id = document.createAttribute("data-id");
-    //id.value = currentCells[0].innerHTML;
-    //newCell.setAttributeNode(id);
-console.log(currentCells[0].innerHTML);
-console.log(typeof currentCells[0].innerHTML);
-var inner = newCell.innerHTML;
-    newCell.setAttribute("data-id", currentCells[0].innerHTML);
     currentRow.appendChild(newCell);
   };
 };

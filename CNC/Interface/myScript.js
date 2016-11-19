@@ -5,21 +5,6 @@ function setInputField() {
   console.log(main.childNodes.length);
   
   if(section[1].id == "tasks-table" && main.childNodes.length == 7) {
-    console.log("hurra");
-    var myHeaders = new Headers();
-	    myHeaders.append('Content-Type','application/json');
-    var data2 = {
-        id: 2,
-        status: true
-    };
-    var myInit2 = {method:"POST",headers: myHeaders,body: JSON.stringify(data2), mode: 'cors',cache: 'default'};
-    var request1 = new Request("http://botnet.artificial.engineering:80/api/Status",myInit2);
-
-    fetch(request1).then((response) => {
-        return response.json();
-    }).then((json) => {
-        console.log(json);
-    });
 
     /* When the user clicks on the button, 
     toggle between hiding and showing the dropdown content */
