@@ -1,5 +1,6 @@
 /**
 * Handles all table processing for the CNC-Interface
+* By ForkGitIT
 */
 
 //Sorting variables
@@ -25,7 +26,7 @@ var tasksServer = "http://botnet.artificial.engineering:80/api/Tasks";
 var statusData;
 var taskData;
 
-//Compose the tables
+//Resets and composes an entire table {Currently limited to Status and Task table only}
 composeTable = function(dataSource, containerID){
 
   fetch(dataSource).then((response) => {
@@ -144,6 +145,8 @@ composeTable = function(dataSource, containerID){
     //Special treatment for specific tables
     if(containerID == "status-table"){
       addActionButtons(containerID);
+    } else if (containerID == "tasks-table") {
+      addTaskForm(containerID);
     };
   });
 };
@@ -162,22 +165,30 @@ var addActionButtons = function(sectionID) {
   for(var i = 0; i < tableBodyRows.length; i++){
     var currentRow = tableBodyRows[i];
     var currentCells = currentRow.cells;
-	var btn = document.createElement('BUTTON');
-	var id = currentCells[0].innerHTML;
-	
-    //We know we want to know what's in the 4 cell
+    var btn = document.createElement('BUTTON');
+    var id = currentCells[0].innerHTML; //The ID of the Bot
+    btn.classList.add("btn");
+    btn.setAttribute('onclick', 'toggleStatus(this)');
+    btn.setAttribute('data-id', id);
+
+    //We know we want to know what's in the 4th cell
     var newCell = document.createElement('TD');
+
     if(currentCells[3].innerHTML == "0"){
-      newCell.innerHTML = "<button class='btn btn-start' data-id='" + '"' + + id + '"' + "' onclick='toggleBtn(this)'>Start</button>";
+      btn.classList.add("btn-start");
+      btn.innerHTML="Start";
     } else {
-      newCell.innerHTML = "<button class='btn btn-stop' data-id='" + '"' + + id + '"' + "' onclick='toggleBtn(this)'>Stop</button>";
+      btn.classList.add("btn-stop");
+      btn.innerHTML="Stop";
     };
+
+    newCell.appendChild(btn);
     currentRow.appendChild(newCell);
   };
 };
 
 /**
-* Adds a header-column to the end of a table.
+* Adds a new header-column to the end of a table.
 * Requires the header row the column is to be added to.
 * Required the title of the new column as a string.
 */
@@ -186,9 +197,3 @@ var addHeaderColumn = function(headerRow, columnTitle){
   newColumn.innerHTML=columnTitle;
   headerRow.appendChild(newColumn);
 };
-//Inititate the status table
-composeTable(statusServer, statusTableContainer);
-
-//Inititate the task table
-composeTable(tasksServer, taskTableContainer);
-

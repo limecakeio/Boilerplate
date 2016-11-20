@@ -1,3 +1,9 @@
+/**
+* Handles the transitions between menu items and slides
+* By ForkGitIT
+*/
+
+
 /**Loads the individual sections from the main-menu into the viewport*/
 var loadPage = function(id, menuLink){
   //Activate section
@@ -19,7 +25,4 @@ var loadPage = function(id, menuLink){
       currentMenuItem.classList.remove("active");
     };
   };
-  setInputField();
 };
-
-

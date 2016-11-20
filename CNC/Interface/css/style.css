@@ -1,5 +1,6 @@
 /**
-GLOBAL DOCUMENT SETTINGS
+* GLOBAL CSS SETTINGS FOR THE CNC-INTERFACE
+* By ForkGitIT
 */
 
 /*ADD ICONS & CUSTOM FONTS*/
@@ -67,8 +68,26 @@ TABLE SETTINGS
 */
 table {
 width: 100%;
+margin-bottom: 35pt;
 border: none;
 padding:5px;
+}
+
+table th, table td {
+  padding:5px;
+}
+
+table thead {
+  text-align: left;
+}
+
+th {
+  text-transform: capitalize;
+}
+
+th[data-field=ip],
+th[data-field=id] {
+  text-transform: uppercase;
 }
 
 th[data-ref] {
@@ -83,8 +102,8 @@ th.ascent:after {
   content: "\e5c7";
 }
 
-table th, table td {
-  padding:5px;
+table tbody {
+  font-weight: 300;
 }
 
 table tbody tr {
@@ -95,17 +114,6 @@ table tbody tr {
 table tbody tr:hover,
 table tbody tr:focus {
   background-color: #96ecff;
-}
-
-table thead {
-  text-align: left;
-}
-.table-heading {
-  font-weight:700;
-}
-
-table tbody {
-  font-weight: 300;
 }
 
 /**
@@ -173,6 +181,15 @@ BUTTONS
   border-color: transparent;
   transition: background-color 0.5s linear;
 }
+
+.btn-submit {
+  background-color: #e6af2e;
+}
+
+.btn-refresh {
+  background-color: #7fdeff;
+}
+
 .btn-start {
   background-color: #aafcb8;
 }
@@ -193,8 +210,8 @@ BUTTONS
 */
 section {
   display:block;
+  z-index:0;
   position: absolute;
-  background-color: orange;
   height:100%;
   width: 100%;
   background-color: #0b132b;
@@ -203,17 +220,12 @@ section {
 }
 
 section.active {
-  height: 90%;
   background-color: transparent;
 	left: 0;
   overflow-y: auto;
 }
 
-/**SELECT*/
-select {
-  margin-top: 90%;
-}
-/**WELCOME SCREEN*/
+/**WELCOME [HOME] SLIDE*/
 
 .bot-icon:before {
   display:block;
@@ -231,4 +243,64 @@ select {
 .welcome-msg {
   text-align: center;
   width:100%;
+}
+
+/**TASK FORM*/
+#tasks-table-form-container {
+  display: flex;
+  align-items: center;
+  position: fixed;
+  z-index:10;
+  bottom:0;
+  width:100%;
+  height:35pt;
+  background-color:#2b4570;
+}
+
+#tasks-table-form-container span {
+  font-weight: 700;
+  color:#dad2d8;
+  font-size:14pt;
+  margin: 0 7pt;
+}
+
+#tasks-table-form-container form {
+  width:40%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+#tasks-table-form-container input {
+  height: 20pt;
+  border-radius: 5px;
+  border:1px solid transparent;
+}
+
+/**DIALOG CONTAINER*/
+.dialog-container {
+  z-index:10;
+  display:flex;
+  align-items: center;
+  position: fixed;
+  bottom:35pt;
+  width:100%;
+  height: 0pt;
+  transition: height 0.35s linear;
+}
+
+.dialog-container.success {
+  background-color: #c6ca53;
+  height:30pt;
+}
+
+.dialog-container.fail {
+  background-color: #fb3640;
+  height: 30pt;
+}
+
+.msg {
+  margin:0;
+  padding: 0 5pt;
+  font-weight:700;
 }

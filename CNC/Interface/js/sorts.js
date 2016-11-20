@@ -1,4 +1,9 @@
 /**
+* Handles all the sorting for the tables in the CNC-Interface
+* By ForkGitIT.
+*/
+
+/**
 * Sets the state of the sorting order of the table the header belongs to
 */
 var sortBy = function(obj) {
