@@ -5,32 +5,14 @@
 
 //If the page was force-reloaded when pointing an an element we need to load that section
 if(window.location.hash) {
-  var elem = window.location.hash;
   var menuLinks = document.querySelectorAll(".menu-link");
-  var currentLink;
-  var currentLinkTarget;
-  //Find the corresponding menu item
-  for(var i = 0; i < menuLinks.length; i++){
-    currentLink = menuLinks[i];
-    currentLinkTarget = currentLink.getAttribute('href');
-    if(currentLinkTarget === elem) {
-      break;
-    };
-  };
-
-  if(currentLinkTarget === "#home") {
-    loadPage('home-slide', currentLink);
-  } else if(currentLinkTarget === "#status") {
-    loadPage('status-table', currentLink);
-  } else if (currentLinkTarget === "#tasks") {
-    loadPage('tasks-table', currentLink);
-  };
-
+  menuLinks.forEach(function(currentElem){
+    if(currentElem.getAttribute('href') === window.location.hash) {
+      loadPage(currentElem.getAttribute('data-anchor'), currentElem);
+    }
+  });
 } else {
-  //No hash means we're looking at home
-  var homeLink = document.querySelector(".home");
-  loadPage("home-slide", homeLink);
-  console.log("NO HASH!");
+  loadPage(document.querySelector(".home").getAttribute('data-anchor'), document.querySelector(".home"));
 };
 
 //Inititate the status table

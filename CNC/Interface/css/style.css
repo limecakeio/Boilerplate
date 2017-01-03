@@ -170,6 +170,9 @@ MAIN MENU
 .menu-link.task:before{
   content: "\e896";
 }
+.menu-link.bot:before{
+  content: "\e859";
+}
 
 /**
 BUTTONS
