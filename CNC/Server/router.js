@@ -1,8 +1,9 @@
 const express = require('express');
 const router  = express.Router();
 const fs = require('fs');
-//AUSLAGERUNG!!!!!!!!!!!?????
-let tasks = [{id :  0,type : 'hash-md5',data :{
+let status2 = require('./status.json');
+let tasks2 = require('./tasks.json');
+/*let tasks = [{id :  0,type : 'hash-md5',data :{
   input:'woot',
   output: null
 }}];
@@ -11,21 +12,14 @@ let status = [{id : 1,ip : "95.214.45.239",tasks : 0,workload : 0.0},
 {id : 2,ip : "192.30.252.153",tasks : 0,workload : 0.0},
 {id : 3,ip : "192.30.253.154",tasks : 0,workload : 0.0},
 {id : 4,ip : "2a02:8071:aa2:fa00:910d:8f43:8516:a59/64",tasks : 0,workload : 0.0}
-];
+];*/
 router.get('/tasks',(req,res) => {
     console.log("get tasks/");
-    res.json(tasks);
+    res.json(tasks2);
 });
 router.get('/status',(req,res) => {
-  /*fs.readFile('./status.json','utf-8',(err,data) => {
-   if (err) throw err;
-   status = data;
-   console.log(data);
-   console.log("get status/");
-
-   res.send(status);*/
    console.log('get status/');
-   res.json(status);
+   res.json(status2);
 });
 router.get('/tasks/:id', (req, res) => {
   console.log("get tasks/:id");
@@ -51,33 +45,38 @@ router.get('/status/:id', (req, res) => {
 });
 // ALL POST REQUESTS
 router.post('/status',(req,res) => {
-  status.forEach(function(entry){
+  let isContained = false;
+  status2.forEach(function(entry){
     //modify that JSON object in tasks somehow accessing the parameters from the request json
     if (entry.id === req.body.id) {
       isContained = true;
-      console.log(typeof entry.workload);
       entry.workload = (entry.workload + 1.0) %2;
-      console.log(entry.workload);
     }
   });
       if(isContained){
         res.json({message:'ok'});
+        fs.writeFile('./status.json', JSON.stringify(status2),(err) => {
+          if (err) throw err;
+        });
       }
-    //if successfulL:
+    //if unsuccessfulL:
     res.json({message:'not ok'});
 
 });
 router.post('/tasks',(req,res) => {
   console.log("post /tasks ");
   let newID = 0;
-  tasks.forEach(function(entry){
+  tasks2.forEach(function(entry){
     //modify that JSON object in tasks somehow accessing the parameters from the request json
     if (entry.id > newID) {
         newID = entry.id;
      }
    });
     newID++;
-    tasks.push({id : newID,type : req.body.type, data : { input : req.body.data.input}, output : null});
+    tasks2.push({id : newID,type : req.body.type, data : { input : req.body.data.input}, output : null});
+    fs.writeFile('./tasks.json', JSON.stringify(tasks2),(err) => {
+      if (err) throw err;
+    });
     res.json({message:'ok'});
 });
 
@@ -89,7 +88,7 @@ router.post('/tasks/:id',(req,res) => {
   tasks.for(function(entry){
     //modify that JSON object in tasks somehow accessing the parameters from the request json
     // dont know how to access values in Json Object in request body;
-    if (entry.id === req.params.id) {
+    if (entry.id === req.body.id) {
       isContained = true;
       entry.type = req.body.type;
       entry.data.input = req.body.data.input;
