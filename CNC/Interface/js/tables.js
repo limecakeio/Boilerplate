@@ -19,8 +19,8 @@ var statusTableSort = [statusTableContainer, "id", "number"];
 var tasksTableSort = [taskTableContainer, "id", "number"];
 
 //Define the location of data sources - the url
-var statusServer = "http://botnet.artificial.engineering:80/api/Status";
-var tasksServer = "http://botnet.artificial.engineering:80/api/Tasks";
+var statusServer = "http://localhost:3000/api/Status";
+var tasksServer = "http://localhost:3000/api/Tasks";
 
 //Define local copies
 var statusData;

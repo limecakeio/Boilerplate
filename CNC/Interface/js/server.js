@@ -36,7 +36,7 @@ function toggleStatus(btn) {
 		mode: 'cors',
 		cache: 'default'
 	};
-	var request = new Request("http://botnet.artificial.engineering:80/api/Status", myInit);
+	var request = new Request("http://localhost:3000/api/Status", myInit);
 
 	fetch(request).then((response) => {
 		return response.json();
@@ -55,7 +55,7 @@ function postRequestTasks(data) {
 	myHeaders.append('Content-Type','application/json');
 
 	var myInit = {method:"POST",headers: myHeaders,body: JSON.stringify(data), mode: 'cors',cache: 'default'};
-	var request = new Request("http://botnet.artificial.engineering:80/api/Tasks/" ,myInit);
+	var request = new Request("http://localhost:3000/api/Tasks/" ,myInit);
 
 	fetch(request).then((response) => {
 		return response.json();

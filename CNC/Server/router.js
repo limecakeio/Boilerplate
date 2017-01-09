@@ -6,15 +6,12 @@ let tasks = [{id :  0,type : 'hash-md5',data :{
   input:'woot',
   output: null
 }}];
-function readIt(path) {
 
-}
 let status = [{id : 1,ip : "95.214.45.239",tasks : 0,workload : 0.0},
 {id : 2,ip : "192.30.252.153",tasks : 0,workload : 0.0},
 {id : 3,ip : "192.30.253.154",tasks : 0,workload : 0.0},
 {id : 4,ip : "2a02:8071:aa2:fa00:910d:8f43:8516:a59/64",tasks : 0,workload : 0.0}
 ];
-let status;
 router.get('/tasks',(req,res) => {
     console.log("get tasks/");
     res.json(tasks);
@@ -29,9 +26,6 @@ router.get('/status',(req,res) => {
    res.send(status);*/
    console.log('get status/');
    res.json(status);
-});
-
-
 });
 router.get('/tasks/:id', (req, res) => {
   console.log("get tasks/:id");
@@ -57,7 +51,6 @@ router.get('/status/:id', (req, res) => {
 });
 // ALL POST REQUESTS
 router.post('/status',(req,res) => {
-  status = status.json();
   status.forEach(function(entry){
     //modify that JSON object in tasks somehow accessing the parameters from the request json
     if (entry.id === req.body.id) {
