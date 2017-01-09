@@ -9,26 +9,26 @@ let tasks = [{id :  0,type : 'hash-md5',data :{
 function readIt(path) {
 
 }
-/*let status = [{id : 1,ip : "95.214.45.239",tasks : 0,workload : 0.0},
+let status = [{id : 1,ip : "95.214.45.239",tasks : 0,workload : 0.0},
 {id : 2,ip : "192.30.252.153",tasks : 0,workload : 0.0},
 {id : 3,ip : "192.30.253.154",tasks : 0,workload : 0.0},
 {id : 4,ip : "2a02:8071:aa2:fa00:910d:8f43:8516:a59/64",tasks : 0,workload : 0.0}
-];*/
+];
 let status;
 router.get('/tasks',(req,res) => {
     console.log("get tasks/");
     res.json(tasks);
 });
 router.get('/status',(req,res) => {
-  fs.readFile('./status.json','utf-8',(err,data) => {
+  /*fs.readFile('./status.json','utf-8',(err,data) => {
    if (err) throw err;
    status = data;
    console.log(data);
    console.log("get status/");
 
-   res.send(status);
-
-   //res.json(status);
+   res.send(status);*/
+   console.log('get status/');
+   res.json(status);
 });
 
 
@@ -84,7 +84,6 @@ router.post('/tasks',(req,res) => {
      }
    });
     newID++;
-    console.log(req);
     tasks.push({id : newID,type : req.body.type, data : { input : req.body.data.input}, output : null});
     res.json({message:'ok'});
 });
