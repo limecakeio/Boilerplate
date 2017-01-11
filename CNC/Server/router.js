@@ -1,49 +1,57 @@
 const express = require('express');
 const router  = express.Router();
 const fs = require('fs');
-let status2 = require('./status.json');
-let tasks2 = require('./tasks.json');
+let status2 = JSON.parse(fs.readFileSync('./status.json','utf-8'));
+let tasks2 = JSON.parse(fs.readFileSync('./tasks.json','utf-8'));
 
+
+/*function sortTasks(array) {
+  array.sort((a, b) => {
+    return b.id - a.id;
+  });
+}*/
 
 router.get('/tasks',(req,res) => {
-    let tasks = require('./tasks.json');
+    let tasks = JSON.parse(fs.readFileSync('./tasks.json','utf-8'));
     res.json(tasks);
 });
 router.get('/status',(req,res) => {
-   res.json(status2);
+  let status = require('./status.json');
+   res.json(status);
 });
 router.get('/tasks/:id', (req, res) => {
-  console.log("get tasks/:id");
-  let rightTask;
-  tasks.forEach(function(entry){
-    if (entry.id === req.params.id) rightTask = entry;
+  let correctTask;
+  tasks2.forEach(function(entry){
+    if (entry.id == req.params.id) {
+    correctTask = entry;
+  }
   });
-  if  (rightTask = null) {
+  console.log(correctTask);
+  if  (correctTask == null) {
     response.json({message : "Not Ok"})
-  } else  {res.json(rightTask)};
-
+  } else  {res.json(correctTask)};
 });
+
 router.get('/status/:id', (req, res) => {
   console.log("get Status/:id");
   let righStatus;
   status.forEach(function(entry){
-    if (entry.id === req.params.id) rightStatus = entry;
+    if (entry.id === req.params.id) correctStatus = entry;
   });
-  if(rightStatus = null) {
+  if(correctStatus = null) {
     response.json({message : "Not Ok"})
   }
-  else{res.json(rightTask)};
+  else{res.json(correctTask)};
 });
 // ALL POST REQUESTS
 router.post('/status',(req,res) => {
   let isContained = false;
   let status = require('./status.json');
-  status.forEach(function(entry){
-    //modify that JSON object in tasks somehow accessing the parameters from the request json
+  status.forEach(entry => {  //modify that JSON object in tasks somehow accessing the parameters from the request json
     if (entry.id === req.body.id) {
       isContained = true;
       entry.workload = (entry.workload + 1.0) %2;
-    }
+    };
   });
       if(isContained){
         fs.writeFile('./status.json', JSON.stringify(status),(err) => {
@@ -55,23 +63,31 @@ router.post('/status',(req,res) => {
 });
 
 router.post('/tasks',(req,res) => {
-  console.log("post /tasks ");
-  let newID = 0;
-  tasks2.forEach(function(entry){
-    //modify that JSON object in tasks somehow accessing the parameters from the request json
-    if (entry.id > newID) {
-        newID = entry.id;
-     }
-   });
-    newID++;
+  //if(req.get('token') === 'limecakeio'){
+  let newID;
+  console.log("post /tasks");
+  if(tasks2[0] === undefined) {
+    newID = 0;
+  }
+  else{
+     newID = tasks2[tasks2.length-1].id;
+     ++newID;
+     console.log(newID);
+
+// TODO for you noobs:
+// google array prototype find, forEach, map, unique, filter
+// TODO fat arrow functions
+}
+
     tasks2.push({id : newID,type : req.body.type, data : { input : req.body.data.input, output : null}});
     fs.writeFile('./tasks.json', JSON.stringify(tasks2),(err) => {
       if (err) throw err;
     });
     res.json({message:'OK'});
-});
 
-
+  //} else {
+    //res.json({message:'NOT OK'})}
+  });
 router.post('/tasks/:id',(req,res) => {
   console.log("post /tasks/id ");
   //if what you try to post is JSON

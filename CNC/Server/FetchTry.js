@@ -1,9 +1,7 @@
-var fetch = require('node-fetch');
+var http = require('http');
 
-
-fetch('http://localhost:3000/api/Status',{methdod : 'GET'})
-    .then(function(res) {
-        return res.json();
-    }).then((json) => {
-        console.log(json);
-    });
+let data  = http.get('http://localhost:3000/api/tasks/1',(res) => {
+  res.setEncoding('utf-8')
+  res.on('error',console.error)
+  res.on('data',console.log)
+});
