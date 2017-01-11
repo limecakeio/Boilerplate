@@ -1,1 +1,1 @@
-[{"id":0,"type":"hash-md5","data":{"input":"woot","output":null}},{"id":1,"type":"hash-md5","data":{"input":"asfasfafs"},"output":null},{"id":2,"type":"hash-sha256","data":{"input":"asfasffas"},"output":null},{"id":3,"type":"crack-md5","data":{"input":"asfasfasf"},"output":null},{"id":4,"type":"hash-sha256","data":{"input":"afsasfafs"},"output":null},{"id":5,"type":"hash-md5","data":{"input":"Simon was here"},"output":null}]
+[]

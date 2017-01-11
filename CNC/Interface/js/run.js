@@ -21,6 +21,9 @@ composeTable(statusServer, statusTableContainer);
 //Inititate the task table
 composeTable(tasksServer, taskTableContainer);
 
+//Initiate the reports table
+composeTable(botsServer, botsTableContainer);
+
 //Refresh the Status table within an adequate interval of time
 setInterval(function(){
   composeTable(statusServer, statusTableContainer);
