@@ -11,6 +11,7 @@ function toggleStatus(btn) {
 	//Set headers
 	var myHeaders = new Headers();
 	myHeaders.append('Content-Type','application/json');
+	myHeaders.append('token','limecakeio');
 
 	//Get the current BOT ID
 	var id = parseInt(btn.getAttribute('data-id'));
@@ -53,6 +54,7 @@ function toggleStatus(btn) {
 function postRequestTasks(data) {
 	var myHeaders = new Headers();
 	myHeaders.append('Content-Type','application/json');
+	myHeaders.append('token','limecakeio');
 
 	var myInit = {method:"POST",headers: myHeaders,body: JSON.stringify(data), mode: 'cors',cache: 'default'};
 	var request = new Request("http://localhost:3000/api/Tasks/" ,myInit);
