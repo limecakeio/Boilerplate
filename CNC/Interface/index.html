@@ -18,6 +18,17 @@
 <li><a href="#status" class="menu-link status" id="st-link" onclick="loadPage('status-table', this)" data-anchor="status-table">Status Table</a></li>
 <li><a href="#tasks" class="menu-link task" id="task-link" onclick="loadPage('tasks-table', this)" data-anchor="tasks-table">Task Table</a></li>
 <li><a href="#botview" class="menu-link bot" id="bot-link" onclick="loadPage('bots-table', this)" data-anchor="bots-table">BOT View </a></li>
+<!-- STARTOF BOT PROCESSING SWITCH!-->
+<div class="bot-cmd-container">
+  <div class="bot-cmd-inner">
+    <h3 class="bot-cmd-title">BOT Processing</h3>
+    <label class="switch">
+      <input type="checkbox" id="bot-toggler">
+      <div class="slider"></div>
+    </label>
+    <div class="bot-cmd-protocol" id="bot-protocol"></div>
+  </div>
+</div>
 </menu>
 <main class="main-content">
   <section class="active" id="home-slide">

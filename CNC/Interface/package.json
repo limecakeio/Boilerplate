@@ -1,4 +1,11 @@
 {
-"main" : "index.html",
-"name" : "TestCrap"
+    "main":            "index.html",
+    "name":            "cnc-interface",
+    "window" : {
+      "title" : "CNC Interface by ForkGitIT",
+      "icon" : "./logo.png",
+      "width" : 1280,
+      "height" : 640
+    },
+    "nodejs" : true
 }

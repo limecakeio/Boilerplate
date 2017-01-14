@@ -3,7 +3,70 @@
 * script order.
 */
 
-//If the page was force-reloaded when pointing an an element we need to load that section
+//Sections - contains the CNC-Interface sections as objects
+var sections = [];
+
+//Initiate the main section-objects
+const tasks = {
+  "title" : "Task Table [Bots]",
+  "section" : "tasks-table",
+  "server" : "http://localhost:3000/api/Tasks",
+  "sort" : {
+    "column" : "id",
+    "dataType" : "number"
+  }
+}
+sections.push(tasks);
+
+const status = {
+  "title" : "Status Table [Bots]",
+  "section" : "status-table",
+  "server" : "http://localhost:3000/api/Status",
+  "sort" : {
+    "column" : "id",
+    "dataType" : "number"
+  }
+}
+sections.push(status);
+
+const bots = {
+  "title" : "BOTS Report",
+  "section" : "bots-table",
+  "data" : JSON.parse(fs.readFileSync('./report/report.json','utf-8', ((err) => {if(err){throw err;}}))),
+  "sort" : {
+    "column" : "id",
+    "dataType" : "number"
+  }
+};
+sections.push(bots);
+
+let refreshSection = function(obj) {
+  if(typeof obj.server === "undefined") {
+    let sortedData = sortData(obj);
+    composeTable(obj);
+  } else {
+    fetch(obj.server).then((response) => {
+      return response.json();
+    }).then((json) => {
+      obj["data"] = json;
+      sortData(obj);
+      composeTable(obj);
+    });
+  }
+}
+
+//Inititalise the CNC-Interface tables
+sections.map(section => {
+  refreshSection(section);
+});
+
+//Refresh the Status table within an adequate interval of time
+setInterval(function(){
+  refreshSection(status);
+}, 5000);
+
+//If the page was force-reloaded while the user was in a specific section
+//ensure to load that session as the first screen.
 if(window.location.hash) {
   var menuLinks = document.querySelectorAll(".menu-link");
   menuLinks.forEach(function(currentElem){
@@ -14,17 +77,3 @@ if(window.location.hash) {
 } else {
   loadPage(document.querySelector(".home").getAttribute('data-anchor'), document.querySelector(".home"));
 };
-
-//Inititate the status table
-composeTable(statusServer, statusTableContainer);
-
-//Inititate the task table
-composeTable(tasksServer, taskTableContainer);
-
-//Initiate the reports table
-composeTable(botsServer, botsTableContainer);
-
-//Refresh the Status table within an adequate interval of time
-setInterval(function(){
-  composeTable(statusServer, statusTableContainer);
-}, 5000);

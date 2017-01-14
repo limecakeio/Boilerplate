@@ -7,7 +7,6 @@
 * Sets the state of the sorting order of the table the header belongs to
 */
 var sortBy = function(obj) {
-
   //Keep track of descenting or ascenting
   clickCount++;
 
@@ -15,54 +14,52 @@ var sortBy = function(obj) {
   var sortContainer = obj.getAttribute("data-ref");
   var sortField = obj.getAttribute("data-field");
   var sortType = obj.getAttribute("data-type");
-  var dataSource;
+  //Find the section we are working with
+  let activeSection = sections.find(section => {
+    return section.section === sortContainer;
+  });
 
-  //Define which data source to sort
-  if(sortContainer == "status-table") {
-    statusTableSort = [sortContainer, sortField, sortType];
-    dataSource = statusServer;
-  } else if(sortContainer == "tasks-table") {
-    tasksTableSort = [sortContainer, sortField, sortType];
-    dataSource = tasksServer;
-  };
+  //Set the sorting state of the selected section
+  activeSection.sort.column = sortField;
+  activeSection.sort.dataType = sortType;
 
-  composeTable(dataSource, sortContainer);
+  refreshSection(activeSection);
 };
 
 /**
 * Sorts a JSON Object dependent on the sorting state array of its display container
 */
-var sortData = function(data, state) {
+var sortData = function(obj) {
   //Are we ascenting or descenting
   var isEven = (clickCount % 2 == 0);
 
   //Define which field and type to sort
-  var sortField = state[1];
-  var sortType = state[2];
+  var sortField = obj.sort.column;
+  var sortType = obj.sort.dataType;
 
   if(sortType == "number") {
     if(isEven) {
-      data.sort(function(a,b) {
+      obj["data"].sort(function(a,b) {
         return a[sortField] - b[sortField];
       });
     } else {
-      data.sort(function(a,b) {
+      obj["data"].sort(function(a,b) {
         return b[sortField] - a[sortField];
       });
     };
   } else if(sortType == "string"){
     if(isEven) {
-      data.sort();
+      obj["data"].sort();
     } else {
-      data.reverse();
+      obj["data"].reverse();
     };
   } else if(sortType == "ip") {
     if(isEven) {
-      data.sort(function(a,b) {
+      obj["data"].sort(function(a,b) {
       return parseIP(a[sortField]) - parseIP(b[sortField]);
       });
     } else {
-      data.sort(function(a,b) {
+      obj["data"].sort(function(a,b) {
         return parseIP(b[sortField]) - parseIP(a[sortField]);
       });
     };
@@ -86,59 +83,49 @@ var parseIP = function(ip) {
     currentIP = currentIP[0];
     currentIP = currentIP.split(":");
 
-    //Turn each position into its binary value
-    for(var i = 0; i < currentIP.length; i++) {
-      currentIP[i] = parseInt("0x" + currentIP[i]).toString(2);
-    }
+    let ipSegments = currentIP.map(ip => {
+      //The IP-Position into a binary value
+      ip = parseInt("0x" + ip).toString(2);
 
-    //Ensure all positions are represented as 16-bit
-    for(var i = 0; i < currentIP.length; i++) {
-      if(currentIP[i].length < 16) {
-        var zeros = 16 - currentIP[i].length;
-        var newBinary = "";
-        for(var j = 0; j < zeros; j++) {
+      //Represent the value as 16-bit
+      if(ip.length < 16) {
+        let zeros = 16 - ip.length;
+        let newBinary = "";
+
+        //Filling up missing zeros
+        for(let i = 0; i < zeros; i++) {
           newBinary += "0";
         }
-        newBinary += currentIP[i];
-        currentIP[i] = newBinary;
+        newBinary = newBinary + ip;
+        ip = newBinary;
       }
-    }
+      return ip;
+    });
 
-    //Concatenate the result to a 128-bit binary number
-    var valueString = "";
-    for(var k = 0; k < currentIP.length; k++) {
-      valueString += currentIP[k];
-    }
-
-    //Convert the final value String into an integer
-    return parseInt(valueString, 2);
-  }
-  else { //We have an IPv4 Address
+    let ipResult = ipSegments.join('');
+    return parseInt(ipResult, 2);
+  } else { //We have an IPv4 Address
     currentIP = ip.split(".");
-    //Turn each array position into its binary value
-    for(var i = 0; i < currentIP.length; i++) {
-      currentIP[i] = parseInt(currentIP[i]).toString(2);
-    }
 
-    //Ensure all positions are represented as 8-bit
-    for(var i = 0; i < currentIP.length; i++) {
-      if(currentIP[i].length < 8) {
-        var zeros = 8 - currentIP[i].length;
-        var newBinary = "";
-        for(var j = 0; j < zeros; j++) {
+    let ipSegments = currentIP.map(ip => {
+
+      //Turn IP segment into its binary value
+      ip = parseInt(ip).toString(2);
+
+      //Ensure the IP segment is represented as 8-bits
+      if(ip.length < 8) {
+        let zeros = 8 - ip.length;
+        let newBinary = "";
+        for(let i = 0; i < zeros; i++) {
           newBinary += "0";
         }
-        newBinary += currentIP[i];
-        currentIP[i] = newBinary;
+        newBinary += ip;
+        ip = newBinary;
       }
-    }
-      //Concatenate the result to a 32-bit binary number
-      var valueString = "";
-      for(var k = 0; k < currentIP.length; k++) {
-        valueString += currentIP[k];
-      }
-
-      //Convert the final value String into an integer
-      return parseInt(valueString, 2);
-    }
+      return ip;
+    });
+    let ipResult = ipSegments.join('');
+    //Convert the ipResult into an integer
+    return parseInt(ipResult, 2);
+  }
 }

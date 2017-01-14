@@ -67,7 +67,7 @@ var addTaskForm = function(sectionID) {
   var refresh = document.createElement("BUTTON");
   refresh.classList.add("btn", "btn-refresh");
   refresh.innerHTML="Refresh Table";
-  refresh.onclick= function(){refreshTaskTable()};
+  refresh.onclick= function(){refreshSection(tasks)};
 
   formContainer.appendChild(refresh);
   var taskSection = document.querySelector('#' + sectionID);
@@ -131,7 +131,7 @@ function sendForm(x){
 };
 
 var refreshTaskTable = function () {
-  composeTable(tasksServer, taskTableContainer);
+  refreshSection(tasks);
   var taskSection = document.querySelector("#" + taskTableContainer);
   taskSection.scrollTop = 0;
 }

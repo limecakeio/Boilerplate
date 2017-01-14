@@ -42,11 +42,10 @@ function toggleStatus(btn) {
 	fetch(request).then((response) => {
 		return response.json();
 	}).then((json) => {
-		console.log(json);
-		composeTable(statusServer, statusTableContainer);
+		//Why so tricky? Variable: Status is conflicting with fetch-boolean by the same name.
+		refreshSection(sections.find(section => {return section.section === "status-table"}));
 	});
 };
-
 
 /**
 * Creates a new task on the Task Server
@@ -56,13 +55,18 @@ function postRequestTasks(data) {
 	myHeaders.append('Content-Type','application/json');
 	myHeaders.append('token','limecakeio');
 
-	var myInit = {method:"POST",headers: myHeaders,body: JSON.stringify(data), mode: 'cors',cache: 'default'};
+	var myInit = {
+		method:"POST",
+		headers: myHeaders,
+		body: JSON.stringify(data),
+		mode: 'cors',
+		cache: 'default'
+	};
 	var request = new Request("http://localhost:3000/api/Tasks/" ,myInit);
 
 	fetch(request).then((response) => {
 		return response.json();
 	}).then((json) => {
-		console.log(json);
 		var dialog = document.querySelector(".dialog-container");
 		var msg = document.createElement("P");
 		msg.classList.add("msg");
@@ -70,8 +74,8 @@ function postRequestTasks(data) {
 			dialog.classList.add("success");
 			msg.innerHTML="The task was successfully added [Click Refresh Table to view]";
 		} else {
-			dialog.classList.add("fail");
 			msg.innerHTML="An error occured and the task was not added.";
+			dialog.classList.add("fail");
 		};
 		var currentForm = document.querySelector("form");
 		currentForm.reset();
@@ -80,11 +84,8 @@ function postRequestTasks(data) {
 	});
 }
 
-/**
-* Resets the dialog container
-*/
 var resetDialog = function() {
 	var dialog = document.querySelector(".dialog-container");
-	dialog.innerHTML="";
+	dialog.innerHTML=" ";
 	dialog.classList.remove("success", "fail");
 };

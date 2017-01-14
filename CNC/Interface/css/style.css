@@ -175,6 +175,76 @@ MAIN MENU
 }
 
 /**
+SLIDER // BOT PROCESS CONTROL PANEL
+*/
+.bot-cmd-inner {
+}
+
+.bot-cmd-inner {
+  text-align: center;
+}
+.bot-cmd-title {
+  text-align: center;
+}
+
+.bot-cmd-title:before {
+  content: "\e8b8";
+  margin-right: 6pt;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 100px;
+  height: 40px;
+}
+
+.switch input {display:none;}
+
+.slider {
+  position: absolute;
+  text-align: left;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 45px;
+  padding: 4px 0 0 4px;
+  left: 4px;
+  bottom: 4px;
+  background-color: #aafcb8;
+  content: 'START';
+  border:1px solid #b2b2b2;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  background-color: #f25f5c;
+  content: 'STOP';
+  width: 39px;
+  -webkit-transform: translateX(46px);
+  -ms-transform: translateX(46px);
+  transform: translateX(46px);
+}
+
+
+
+/**
 BUTTONS
 */
 .btn {
