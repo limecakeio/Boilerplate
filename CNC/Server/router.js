@@ -46,7 +46,7 @@ router.post('/status',(req,res) => {
       });
       res.json({message:'OK'});
     } else{res.json({message: 'Not Ok'})}
-  } else{res.json({message:'not ok'});}
+  } else{res.status(404).send('Permission denied!');}
 });
 
 router.post('/tasks',(req,res) => {
@@ -62,7 +62,7 @@ router.post('/tasks',(req,res) => {
       if (err) throw err;
       });
     res.json({message:'OK'});
-} else {res.json({message:'NOT OK'})}
+} else{res.status(404).send('Permission denied!');}
   });
 
 router.post('/tasks/:id',(req,res) => {
@@ -78,40 +78,46 @@ router.post('/tasks/:id',(req,res) => {
         });
         res.json({message: 'Ok'});
       } else { res.json({message: 'Not ok'}); }
-} else { res.json({message: 'Not ok'}); }
+} else{res.status(404).send('Permission denied!');}
 });
 
 /**Attempts to update a task-list element with a processed output
 * as long as it hasn't been processed already
 */
 router.post('/reports', (req, res) => {
-  let obj = req.body;
-  let tasks = JSON.parse(fs.readFileSync('./tasks.json','utf-8'));
-  let sync;
+if(req.get('token') === 'limecakeio' && req.body != undefined){
+    let obj = req.body;
+    let tasks = JSON.parse(fs.readFileSync('./tasks.json','utf-8'));
+    let sync;
 
-  //Find the responding task if it's not been processed
-  let taskPosition = tasks.findIndex(findUnprocessedTaskById);
-  console.log("Task Position was: ", taskPosition);
-  //Write the output to the task if it hasn't been set yet
-  if(taskPosition > -1) {
-    //Update the task in the array
-    tasks[taskPosition] = obj;
-    //Write the updated task to the tasks-file
-    fs.writeFile("./tasks.json", JSON.stringify(tasks), function(error) {
-      if(error) {throw error;}
-    });
-    sync = "OK";
-  } else {
-    sync = "Not OK";
-  };
-  res.json({"message" : sync});
+    //Find the responding task if it's not been processed
+    let taskPosition = tasks.findIndex(findUnprocessedTaskById);
+    console.log("Task Position was: ", taskPosition);
+    //Write the output to the task if it hasn't been set yet
+    if(taskPosition > -1) {
+      //Update the task in the array
+      tasks[taskPosition] = obj;
+      //Write the updated task to the tasks-file
+      fs.writeFile("./tasks.json", JSON.stringify(tasks), function(error) {
+        if(error) {throw error;}
+      });
+      sync = "OK";
+    } else {
+      sync = "Not OK";
+    };
+    res.json({"message" : sync});
+    /**
+    * Callback function intended for array.prototype.find - like functions.
+    */
 
-  /**
-  * Callback function intended for array.prototype.find - like functions.
-  */
-  function findUnprocessedTaskById(task) {
-    return task.id === obj.id && task.data.output === null;
-  }
+
+    function findUnprocessedTaskById(task) {
+      return task.id === obj.id && task.data.output === null;
+    }
+ } else{res.status(404).send('Permission denied!');}
+
+
+
 });
 
 module.exports = router;

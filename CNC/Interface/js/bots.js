@@ -81,9 +81,9 @@ const processTasks = function() {
       //Sync the results with the server
       const headers = new Headers();
       headers.append('Content-Type','application/json');
+      headers.append('token','limecakeio');
       const requestHeaders = {
           method:"POST",
-          token: "limecakeio",
           headers: headers, body: JSON.stringify(currentTask),
           mode: 'cors',
           cache: 'default'
