@@ -1,6 +1,7 @@
 {
     "main":            "index.html",
     "name":            "cnc-interface",
+	"version":         "1.0.0",
     "window" : {
       "title" : "CNC Interface by ForkGitIT",
       "icon" : "./logo.png",
