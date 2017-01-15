@@ -5,7 +5,6 @@
 
 //Sections - contains the CNC-Interface sections as objects
 let sections = [];
-let fs = require('fs');
 
 //Initiate the main section-objects
 const tasks = {
