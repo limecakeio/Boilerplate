@@ -4,134 +4,143 @@
 */
 
 //Define Task Form Attributes
-var select;
-var opt;
+let select;
+let opt;
 
 /**
 * Adds the task form to the forwarded sectionID
 */
-var addTaskForm = function(sectionID) {
+
+let addTaskForm = function(sectionID) {
   //Create a dialong containerID
-  var dialog = document.createElement("DIV");
-  dialog.id=sectionID + "-dialog";
-  dialog.classList.add("dialog-container");
+	let dialog = document.createElement("DIV");
+	dialog.id = sectionID + "-dialog";
+	dialog.classList.add("dialog-container");
 
   //Create new container for form
-  var formContainer = document.createElement("DIV");
-  formContainer.id = sectionID + "-form-container";
-  var spanner = document.createElement("SPAN");
-  spanner.innerHTML="New Task: ";
-  formContainer.appendChild(spanner);
+	let formContainer = document.createElement("DIV");
+	formContainer.id = sectionID + "-form-container";
+	let spanner = document.createElement("SPAN");
+	spanner.innerHTML = "New Task: ";
+	formContainer.appendChild(spanner);
 
   //Build the form
-  var taskForm = document.createElement("FORM");
-  taskForm.id = sectionID + "-form";
+	let taskForm = document.createElement("FORM");
+	taskForm.id = sectionID + "-form";
 
   //Select box
-  select = document.createElement("SELECT");
-  var option = document.createElement("option");
-  var option1 = document.createElement("option");
-  var option2 = document.createElement("option");
-  var option3 = document.createElement("option");
-  option.text = "Select a type...";
-  option1.text = "hash-md5";
-  option2.text = "hash-sha256";
-  option3.text = "crack-md5";
-  select.add(option);
-  select.add(option1);
-  select.add(option2);
-  select.add(option3);
-  taskForm.appendChild(select);
+	select = document.createElement("SELECT");
+	let option = document.createElement("option");
+	let option1 = document.createElement("option");
+	let option2 = document.createElement("option");
+	let option3 = document.createElement("option");
+	option.text = "Select a type...";
+	option1.text = "hash-md5";
+	option2.text = "hash-sha256";
+	option3.text = "crack-md5";
+	select.add(option);
+	select.add(option1);
+	select.add(option2);
+	select.add(option3);
+	taskForm.appendChild(select);
   //Add a listener on select
-  select.onchange = function(){changeOpt(select)};
+	select.onchange = function() {
+		changeOpt(select);
+	};
 
   //Input text
-  inputText = document.createElement("INPUT");
-  inputText.setAttribute("type", "text");
-  inputText.setAttribute("placeholder", "Task Input...");
-  taskForm.appendChild(inputText);
+	inputText = document.createElement("INPUT");
+	inputText.setAttribute("type", "text");
+	inputText.setAttribute("placeholder", "Task Input...");
+	taskForm.appendChild(inputText);
 
   //Add listener to text field
-  inputText.onchange = function() {change()};
+	inputText.onchange = function() {
+		change();
+	};
 
   //Submit button
-  var button = document.createElement("BUTTON");
-  button.classList.add("btn", "btn-submit");
-  button.innerHTML="Post Task";
-  button.onclick = function(){sendForm(select)};
-  taskForm.appendChild(button);
+	let button = document.createElement("BUTTON");
+	button.classList.add("btn", "btn-submit");
+	button.innerHTML = "Post Task";
+	button.onclick = function() {
+		sendForm(select);
+	};
+	taskForm.appendChild(button);
 
-  formContainer.appendChild(taskForm);
+	formContainer.appendChild(taskForm);
 
   //Add a refresh button to the form
-  var refresh = document.createElement("BUTTON");
-  refresh.classList.add("btn", "btn-refresh");
-  refresh.innerHTML="Refresh Table";
-  refresh.onclick= function(){refreshSection(tasks)};
+	let refresh = document.createElement("BUTTON");
+	refresh.classList.add("btn", "btn-refresh");
+	refresh.innerHTML = "Refresh Table";
+	refresh.onclick = function() {
+		refreshSection(tasks);
+	};
 
-  formContainer.appendChild(refresh);
-  var taskSection = document.querySelector('#' + sectionID);
-  taskSection.appendChild(dialog);
-  taskSection.appendChild(formContainer);
-}
-
-function changeOpt(x){
-  opt = getSelectedOption(x);
-}
-
-function getSelectedOption(x) {
-  var opt;
-  for ( var i = 0, len = x.options.length; i < len; i++ ) {
-    opt = x.options[i];
-    if ( opt.selected === true ) {
-      break;
-    }
-  }
-  return opt.text;
-}
-
-function change() {
-  return inputText.value;
+	formContainer.appendChild(refresh);
+	let taskSection = document.querySelector('#' + sectionID);
+	taskSection.appendChild(dialog);
+	taskSection.appendChild(formContainer);
 };
 
-function sendForm(x){
-  var currentOption = getSelectedOption(x);
-  var currentInput = change();
+let changeOpt = function(x) {
+	opt = getSelectedOption(x);
+};
+
+let getSelectedOption = function (x) {
+	let opt;
+	for (let i = 0, len = x.options.length; i < len; i++) {
+		opt = x.options[i];
+		if (opt.selected === true) {
+			break;
+		}
+	}
+	return opt.text;
+};
+
+let change = function() {
+	return inputText.value;
+};
+
+let sendForm = function (x) {
+	let currentOption = getSelectedOption(x);
+	let currentInput = change();
 
   //Catch false inputs
-  var dialog = document.querySelector(".dialog-container");
-  if(currentOption == "Select a type..." || currentInput.length == 0) {
-    dialog.classList.add("fail");
+	let dialog = document.querySelector(".dialog-container");
+	if (currentOption === "Select a type..." || currentInput.length === 0) {
+		dialog.classList.add("fail");
 
-    var optMessage = " You have to select a type of task to add!";
-    var inputMessage = " Input cannot be empty!";
-    var error = document.createElement("P");
-    error.classList.add("msg");
+		let optMessage = " You have to select a type of task to add!";
+		let inputMessage = " Input cannot be empty!";
+		let error = document.createElement("P");
+		error.classList.add("msg");
 
-    var errorMsg = "";
-    if(currentOption == "Select a type..."){
-      errorMsg += optMessage;
-    };
-    if(currentInput.length == 0) {
-      errorMsg += inputMessage;
-    };
-    error.innerHTML = errorMsg;
-    dialog.appendChild(error);
-  } else {
-    var data = {
-     type: currentOption,
-     data: {
-       input: currentInput  // output is generated by Bots
-     }
-   };
-   dialog.innerHTML="";
-   dialog.classList.remove("fail");
-   postRequestTasks(data);
-  };
+		let errorMsg = "";
+		if (currentOption === "Select a type...") {
+			errorMsg += optMessage;
+		}
+		if (currentInput.length === 0) {
+			errorMsg += inputMessage;
+		}
+		error.innerHTML = errorMsg;
+		dialog.appendChild(error);
+	} else {
+		let data = {
+			type: currentOption,
+			data: {
+				input: currentInput  // output is generated by Bots
+			}
+		};
+		dialog.innerHTML = "";
+		dialog.classList.remove("fail");
+		postRequestTasks(data);
+	}
 };
 
-var refreshTaskTable = function () {
-  refreshSection(tasks);
-  var taskSection = document.querySelector("#" + taskTableContainer);
-  taskSection.scrollTop = 0;
-}
+let refreshTaskTable = function () {
+	refreshSection(tasks);
+	let taskSection = document.querySelector("#" + taskTableContainer);
+	taskSection.scrollTop = 0;
+};
