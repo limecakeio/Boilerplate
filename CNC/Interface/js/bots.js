@@ -109,10 +109,10 @@ const processTasks = function() {
 			return a.id - b.id;
 		});
 		fs.writeFile("./report/report.json", JSON.stringify(bots.data), (err) => {
+			if (err) {
+				throw err;
+			}
 		});
-		if (err) {
-			throw err;
-		}
 	};
 };
 
