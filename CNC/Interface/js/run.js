@@ -46,7 +46,7 @@ sections.push(bots);
 
 let refreshSection = function(obj) {
 	if (typeof obj.server === "undefined") {
-		let sortedData = sortData(obj);
+		sortData(obj);
 		composeTable(obj);
 	} else {
 		fetch(obj.server).then((response) => {

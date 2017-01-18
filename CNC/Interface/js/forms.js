@@ -5,7 +5,6 @@
 
 //Define Task Form Attributes
 let select;
-let opt;
 
 /**
 * Adds the task form to the forwarded sectionID
